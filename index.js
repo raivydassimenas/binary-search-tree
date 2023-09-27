@@ -1,4 +1,4 @@
-const Tree = (arr) => {
+const BST = (arr) => {
   return {
     root: buildTree(arr, 0, arr.length - 1),
     buildTree: (arr, start, end) => {
@@ -92,7 +92,7 @@ const Tree = (arr) => {
         } else if (root.value > value) {
           return findRec(value, root.leftNode);
         }
-      }
+      };
       return findRec(value, root);
     },
     levelOrder: (callback = null) => {
@@ -105,7 +105,7 @@ const Tree = (arr) => {
         while (discovered.length !== 0) {
           const currNode = discovered.shift();
           if (currNode.leftNode) {
-            discovered.push(currNode.leftNode)
+            discovered.push(currNode.leftNode);
           }
           if (currNode.rightNode) {
             discovered.push(currNode.rightNode);
@@ -132,9 +132,9 @@ const Tree = (arr) => {
           return;
         }
         inorderRec(node.leftNode);
-        visited.push(node); 
+        visited.push(node);
         inorderRec(node.rightNode);
-      }
+      };
 
       inorderRec(root);
 
@@ -158,7 +158,7 @@ const Tree = (arr) => {
         visited.push(node);
         preorderRec(node.leftNode);
         preorderRec(node.rightNode);
-      }
+      };
 
       preorderRec(root);
 
@@ -182,7 +182,7 @@ const Tree = (arr) => {
         postorderRec(node.leftNode);
         postorderRec(node.rightNode);
         visited.push(node);
-      }
+      };
 
       postorderRec(root);
 
@@ -199,7 +199,6 @@ const Tree = (arr) => {
       return 1 + Math.max(height(node.leftNode), height(node.rightNode));
     },
     depth: (node) => {
-      
     },
     isBalanced: (root) => {
       if (root == null) {
@@ -212,9 +211,9 @@ const Tree = (arr) => {
 
       return false;
     },
-
-  }
+  };
 }
+
 
 const Node = (value = null) => {
   return {
