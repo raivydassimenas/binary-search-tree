@@ -95,7 +95,7 @@ const Tree = (arr) => {
       }
       return findRec(value, root);
     },
-    levelOrder: (callback) => {
+    levelOrder: (callback = null) => {
       let discovered = [];
       let visited = [];
 
@@ -120,7 +120,7 @@ const Tree = (arr) => {
       }
       return visited;
     },
-    inorder: (callback) => {
+    inorder: (callback = null) => {
       if (!root) {
         return;
       }
@@ -144,7 +144,7 @@ const Tree = (arr) => {
 
       return visited;
     },
-    preorder: (callback) => {
+    preorder: (callback = null) => {
       if (!root) {
         return;
       }
@@ -168,7 +168,7 @@ const Tree = (arr) => {
 
       return visited;
     },
-    postorder: (callback) => {
+    postorder: (callback = null) => {
       if (!root) {
         return;
       }
@@ -199,8 +199,20 @@ const Tree = (arr) => {
       return 1 + Math.max(height(node.leftNode), height(node.rightNode));
     },
     depth: (node) => {
+      
+    },
+    isBalanced: (root) => {
+      if (root == null) {
+        return true;
+      }
 
-    }
+      if (Math.abs(root.height(root.leftNode) - root.height(root.rightNode)) <= 1 && isBalanced(root.leftNode) == true && isBalanced(root.rightNode) == true) {
+        return true;
+      }
+
+      return false;
+    },
+
   }
 }
 
