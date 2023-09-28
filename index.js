@@ -199,6 +199,21 @@ const BST = (arr) => {
       return 1 + Math.max(height(node.leftNode), height(node.rightNode));
     },
     depth: (node) => {
+      const depthRec = (root, node) => {
+        if (root === null) {
+          return -1;
+        }
+
+        let dist = -1;
+
+        if (root == node || (dist = depthRec(root.leftNode, node)) >= 0 || (dist = depthRec(root.rightNode, node)) >= 0) {
+          return dist + 1;
+        }
+
+        return dist;
+      };
+
+      return depthRec(root, node);
     },
     isBalanced: (root) => {
       if (root == null) {
