@@ -226,6 +226,12 @@ const BST = (arr) => {
 
       return false;
     },
+    rebalance: () => {
+      const arrToRebalance = this.inorder();
+      arrToRebalance.sort();
+
+      this.root = this.buildTree(arrToRebalance, 0, arrToRebalance.length - 1);
+    }
   };
 }
 
@@ -243,3 +249,47 @@ const Node = (value = null) => {
     }
   }
 }
+
+let arr = [];
+
+for (let i = 0; i < 32; i++) {
+  arr.push(Math.floor(Math.random() * 100));
+}
+
+let bst = BST(arr);
+
+console.log("Is balanced? " + bst.isBalanced());
+
+console.log("Elements level order:");
+console.log(bst.levelOrder());
+
+console.log("Elements preorder:");
+console.log(bst.preorder());
+
+console.log("Elements postorder:");
+console.log(bst.postorder());
+
+console.log("Elements inorder:");
+console.log(bst.inorder());
+
+for (let i = 100; i < 110; i++) {
+  bst.insert(i);
+}
+
+console.log("Is balanced? " + bst.isBalanced());
+
+bst.rebalance();
+
+console.log("Is balanced? " + bst.isBalanced());
+
+console.log("Elements level order:");
+console.log(bst.levelOrder());
+
+console.log("Elements preorder:");
+console.log(bst.preorder());
+
+console.log("Elements postorder:");
+console.log(bst.postorder());
+
+console.log("Elements inorder:");
+console.log(bst.inorder());
