@@ -1,7 +1,6 @@
-const BST = (arr) => {
+function BST(arr) {
   return {
-    root: buildTree(arr, 0, arr.length - 1),
-    buildTree: (arr, start, end) => {
+    buildTree: function(arr, start, end) {
       if (start > end) {
         return null;
       }
@@ -13,10 +12,11 @@ const BST = (arr) => {
 
       return rootNode;
     },
-    insert: (value) => {
+    root: buildTree(arr, 0, arr.length - 1),
+    insert: function(value) {
       insertRec(value, root);
     },
-    insertRec: (value, node) => {
+    insertRec: function(value, node)  {
       if (value == node.value) {
         return;
       }
@@ -40,7 +40,7 @@ const BST = (arr) => {
       }
     },
     // deleteNode is taken from GeeksForGeeks.org
-    deleteNode: (value, root) => {
+    deleteNode: function(value, root)  {
       if (!root) {
         return root;
       }
@@ -81,7 +81,7 @@ const BST = (arr) => {
         return root;
       }
     },
-    find: (value) => {
+    find: function(value)  {
       const findRec = (value, root) => {
         if (!root) {
           return null;
@@ -95,7 +95,7 @@ const BST = (arr) => {
       };
       return findRec(value, root);
     },
-    levelOrder: (callback = null) => {
+    levelOrder: function(callback = null)  {
       let discovered = [];
       let visited = [];
 
@@ -144,7 +144,7 @@ const BST = (arr) => {
 
       return visited;
     },
-    preorder: (callback = null) => {
+    preorder: function(callback = null)  {
       if (!root) {
         return;
       }
@@ -168,7 +168,7 @@ const BST = (arr) => {
 
       return visited;
     },
-    postorder: (callback = null) => {
+    postorder: function(callback = null)  {
       if (!root) {
         return;
       }
@@ -192,13 +192,13 @@ const BST = (arr) => {
 
       return visited;
     },
-    height: (node) => {
+    height: function(node) {
       if (!node || (!node.leftNode && !node.rightNode)) {
         return 0;
       }
       return 1 + Math.max(height(node.leftNode), height(node.rightNode));
     },
-    depth: (node) => {
+    depth: function(node) {
       const depthRec = (root, node) => {
         if (root === null) {
           return -1;
@@ -215,7 +215,7 @@ const BST = (arr) => {
 
       return depthRec(root, node);
     },
-    isBalanced: (root) => {
+    isBalanced: function(root) {
       if (root == null) {
         return true;
       }
@@ -226,7 +226,7 @@ const BST = (arr) => {
 
       return false;
     },
-    rebalance: () => {
+    rebalance: function() {
       const arrToRebalance = this.inorder();
       arrToRebalance.sort();
 
@@ -236,7 +236,7 @@ const BST = (arr) => {
 }
 
 
-const Node = (value = null) => {
+function Node(value = null) {
   return {
     value,
     leftNode: null,
