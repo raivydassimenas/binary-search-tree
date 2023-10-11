@@ -123,7 +123,7 @@ function BST(arr) {
         }
       }
   
-      if (callback) {
+      if (callback != null) {
         const arr = visited.map(elem => callback(elem));
         return arr;
       }
