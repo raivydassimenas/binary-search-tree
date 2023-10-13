@@ -1,34 +1,44 @@
-function buildTree(arr) {
-  function buildTreeRec(arr, start, end) {
-    if (start > end) {
-      return null;
-    }
-    const mid = Math.floor((start + end) / 2);
-
-    rootNode = Node(arr[mid]);
-    rootNode.setLeft(buildTreeRec(arr, start, mid - 1));
-    rootNode.setRight(buildTreeRec(arr, mid + 1, end));
-
-    return rootNode;
+function Node(value, leftNode = null, rightNode = null) {
+  return {
+    value,
+    leftNode,
+    rightNode,
   };
+}
 
-  return buildTreeRec(arr, 0, arr.length - 1);
+function buildTree(arr, start = 0, end = arr.length - 1) {
+  if (start > end) {
+    return null;
+  }
+  const mid = parseInt((start + end) / 2);
+
+  const rootNode = Node(arr[mid]);
+  rootNode.leftNode = buildTree(arr, start, mid - 1);
+  rootNode.rightNode = buildTree(arr, mid + 1, end);
+
+  return rootNode;
 }
 
 function BST(arr) {
 
-  return {
-    root: buildTree(arr, 0, arr.length - 1),
+  let uniqueArr;
+  
+  if (Array.isArray(arr)) {
+    uniqueArr = [...new Set(arr.sort((a, b) => a - b))];
+  }
 
-    insert: function(value, root = this.root) {
-      const insertRec = function(value, node)  {
+  return {
+    root: buildTree(uniqueArr, 0, uniqueArr.length - 1),
+
+    insert: function (value, root = this.root) {
+      const insertRec = function (value, node) {
         if (value == node.value) {
           return;
         }
         if (value < node.value) {
           if (!node.leftNode) {
             const currNode = Node(value);
-            node.setLeft(currNode);
+            node.leftNode = currNode;
           } else {
             insertRec(value, node.leftNode);
           }
@@ -37,7 +47,7 @@ function BST(arr) {
         if (value > node.value) {
           if (!node.rightNode) {
             const currNode = Node(value);
-            node.setRight(currNode);
+            node.rightNode = currNode;
           } else {
             insertRec(value, node.rightNode);
           }
@@ -47,7 +57,7 @@ function BST(arr) {
       insertRec(value, root);
     },
 
-    deleteNode: function(value, root = this.root)  {
+    deleteNode: function (value, root = this.root) {
       if (!root) {
         return root;
       }
@@ -58,7 +68,7 @@ function BST(arr) {
         root.rightNode = deleteNode(value, root.rightNode);
         return root;
       }
-  
+
       if (!root.leftNode) {
         let temp = root.rightNode;
         delete root;
@@ -69,27 +79,27 @@ function BST(arr) {
         return temp;
       } else {
         let succParent = root;
-  
+
         let succ = root.rightNode;
         while (!succ.leftNode) {
           succParent = succ;
           succ = succ.leftNode;
         }
-  
+
         if (succParent !== root) {
           succParent.leftNode = succ.rightNode;
         } else {
           succParent.rightNode = succ.rightNode;
         }
-  
+
         root.value = succ.value;
-  
+
         delete succ;
         return root;
       }
     },
 
-    find: function(value, root = this.root)  {
+    find: function (value, root = this.root) {
       const findRec = (value, root) => {
         if (!root) {
           return null;
@@ -104,13 +114,13 @@ function BST(arr) {
       return findRec(value, root);
     },
 
-    levelOrder: function(callback = null, root = this.root)  {
+    levelOrder: function (callback = null, root = this.root) {
       let discovered = [];
       let visited = [];
-  
+
       if (root) {
         discovered.push(root);
-  
+
         while (discovered.length !== 0) {
           const currNode = discovered.shift();
           if (currNode.leftNode) {
@@ -122,21 +132,21 @@ function BST(arr) {
           visited.push(currNode);
         }
       }
-  
+
       if (callback != null) {
-        const arr = visited.map(elem => callback(elem));
+        const arr = visited.map((elem) => callback(elem));
         return arr;
       }
       return visited;
     },
 
-    inorder: function(callback = null, root = this.root) {
+    inorder: function (callback = null, root = this.root) {
       if (!root) {
         return;
       }
-  
+
       let visited = [];
-  
+
       const inorderRec = (node) => {
         if (!node) {
           return;
@@ -145,23 +155,23 @@ function BST(arr) {
         visited.push(node);
         inorderRec(node.rightNode);
       };
-  
+
       inorderRec(root);
-  
+
       if (callback) {
-        return visited.map(elem => callback(elem));
+        return visited.map((elem) => callback(elem));
       }
-  
+
       return visited;
     },
 
-    preorder: function(callback = null, root = this.root)  {
+    preorder: function (callback = null, root = this.root) {
       if (!root) {
         return;
       }
-  
+
       let visited = [];
-  
+
       const preorderRec = (node) => {
         if (!node) {
           return;
@@ -170,23 +180,23 @@ function BST(arr) {
         preorderRec(node.leftNode);
         preorderRec(node.rightNode);
       };
-  
+
       preorderRec(root);
-  
+
       if (callback) {
-        return visited.map(elem => callback(elem));
+        return visited.map((elem) => callback(elem));
       }
-  
+
       return visited;
     },
 
-    postorder:  function(callback = null, root = this.root)  {
+    postorder: function (callback = null, root = this.root) {
       if (!root) {
         return;
       }
-  
+
       let visited = [];
-  
+
       const postorderRec = (node) => {
         if (!node) {
           return;
@@ -195,89 +205,99 @@ function BST(arr) {
         postorderRec(node.rightNode);
         visited.push(node);
       };
-  
+
       postorderRec(root);
-  
+
       if (callback) {
-        return visited.map(elem => callback(elem));
+        return visited.map((elem) => callback(elem));
       }
-  
+
       return visited;
     },
-    
-    height: function(node) {
+
+    height: function (node) {
       if (!node || (!node.leftNode && !node.rightNode)) {
         return 0;
       }
-      return 1 + Math.max(height(node.leftNode), height(node.rightNode));
+      return (
+        1 + Math.max(this.height(node.leftNode), this.height(node.rightNode))
+      );
     },
 
-    depth: function(node, root = this.root) {
+    depth: function (node, root = this.root) {
       const depthRec = (root, node) => {
         if (root === null) {
           return -1;
         }
-  
+
         let dist = -1;
-  
-        if (root == node || (dist = depthRec(root.leftNode, node)) >= 0 || (dist = depthRec(root.rightNode, node)) >= 0) {
+
+        if (
+          root == node ||
+          (dist = depthRec(root.leftNode, node)) >= 0 ||
+          (dist = depthRec(root.rightNode, node)) >= 0
+        ) {
           return dist + 1;
         }
-  
+
         return dist;
       };
-  
+
       return depthRec(root, node);
     },
 
-    isBalanced: function(root = this.root) {
+    isBalanced: function (root = this.root) {
       if (root == null) {
         return true;
       }
-  
-      if (Math.abs(this.height(root.leftNode) - this.height(root.rightNode)) <= 1 && this.isBalanced(root.leftNode) == true && this.isBalanced(root.rightNode) == true) {
+
+      if (
+        Math.abs(this.height(root.leftNode) - this.height(root.rightNode)) <=
+          1 &&
+        this.isBalanced(root.leftNode) == true &&
+        this.isBalanced(root.rightNode) == true
+      ) {
         return true;
       }
-  
+
       return false;
     },
 
-    rebalance:  function() {
+    rebalance: function () {
       const arrToRebalance = this.inorder();
       arrToRebalance.sort();
-  
+
       this.root = buildTree(arrToRebalance, 0, arrToRebalance.length - 1);
-    }
-  }; 
-}
-
-
-function Node(value = null) {
-  return {
-    value,
-    leftNode: null,
-    rightNode: null,
-    setLeft: (node) => {
-      leftNode = node;
     },
-    setRight: (node) => {
-        rightNode = node;
-    }
-  }
+  };
 }
+
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+  if (node === null) {
+    return;
+  }
+  if (node.right !== null && node.right !== undefined) {
+    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+  }
+  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+  if (node.left !== null && node.left !== undefined) {
+    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+  }
+};
 
 let arr = [];
 
 for (let i = 0; i < 32; i++) {
-  arr.push(Math.floor(Math.random() * 100));
+  arr.push(parseInt(Math.random() * 100));
 }
 
 let bst = BST(arr);
+prettyPrint(bst.root);
 
 console.log("Is balanced? " + bst.isBalanced());
 
 console.log("Elements level order:");
-console.log(bst.levelOrder());
+prettyPrint(bst.root);
 
 console.log("Elements preorder:");
 console.log(bst.preorder());
