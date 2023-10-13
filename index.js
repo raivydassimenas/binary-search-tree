@@ -264,7 +264,7 @@ function BST(arr) {
     },
 
     rebalance: function () {
-      const arrToRebalance = this.inorder();
+      const arrToRebalance = this.inorder(elem => elem.value);
       arrToRebalance.sort();
 
       this.root = buildTree(arrToRebalance, 0, arrToRebalance.length - 1);
@@ -276,12 +276,12 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   if (node === null) {
     return;
   }
-  if (node.right !== null && node.right !== undefined) {
-    prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+  if (node.rightNode !== null || node.rightNode !== undefined) {
+    prettyPrint(node.rightNode, `${prefix}${isLeft ? "│   " : "    "}`, false);
   }
-  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
-  if (node.left !== null && node.left !== undefined) {
-    prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.value}`);
+  if (node.leftNode !== null || node.leftNode !== undefined) {
+    prettyPrint(node.leftNode, `${prefix}${isLeft ? "    " : "│   "}`, true);
   }
 };
 
@@ -297,16 +297,16 @@ prettyPrint(bst.root);
 console.log("Is balanced? " + bst.isBalanced());
 
 console.log("Elements level order:");
-prettyPrint(bst.root);
+console.log(bst.levelOrder(elem => elem.value));
 
 console.log("Elements preorder:");
-console.log(bst.preorder());
+console.log(bst.preorder(elem => elem.value));
 
 console.log("Elements postorder:");
-console.log(bst.postorder());
+console.log(bst.postorder(elem => elem.value));
 
 console.log("Elements inorder:");
-console.log(bst.inorder());
+console.log(bst.inorder(elem => elem.value));
 
 for (let i = 100; i < 110; i++) {
   bst.insert(i);
@@ -315,17 +315,18 @@ for (let i = 100; i < 110; i++) {
 console.log("Is balanced? " + bst.isBalanced());
 
 bst.rebalance();
+prettyPrint(bst.root);
 
 console.log("Is balanced? " + bst.isBalanced());
 
 console.log("Elements level order:");
-console.log(bst.levelOrder());
+console.log(bst.levelOrder(elem => elem.value));
 
 console.log("Elements preorder:");
-console.log(bst.preorder());
+console.log(bst.preorder(elem => elem.value));
 
 console.log("Elements postorder:");
-console.log(bst.postorder());
+console.log(bst.postorder(elem => elem.value));
 
 console.log("Elements inorder:");
-console.log(bst.inorder());
+console.log(bst.inorder(elem => elem.value));
